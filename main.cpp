@@ -43,7 +43,9 @@ void pause_n_clear()
     system("read -p ... .");
     system("clear");
 #elif __APPLE__
-    cout << "APPLE..." << endl;
+    system("echo Press any key to continue");
+    system("read -p ... .");
+    system("clear");
 #else
     cout << "OS not supported!" << endl;
 #endif
