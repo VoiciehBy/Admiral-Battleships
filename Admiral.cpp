@@ -50,3 +50,32 @@ void Admiral::shot_battleships(char attack_board[10][10],char defend_board[10][1
         }
     }
 }
+
+void Admiral::display_board(char board[10][10])
+{
+    int a=10;
+    for(int i=0; i<a; i++)
+    {
+        for(int ii=0; ii<30; ii++)
+            cout << '=';
+        cout << endl
+             << '|' << board[i][0] << '|';
+        for(int j=1; j<a; j++)
+            cout << '|' << board[i][j] << '|';
+        cout << endl;
+    }
+    for(int ii=0; ii<30; ii++)
+        cout << '=';
+    cout << endl;
+}
+
+void Admiral::create_empty_board(char board[10][10])
+{
+    int a=10;
+    for(int i=0; i<a; i++)
+    {
+        board[i][0]=' ';
+        for(int j=0; j<a; j++)
+            board[i][j]=' ';
+    }
+}
