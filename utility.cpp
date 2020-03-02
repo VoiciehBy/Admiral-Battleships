@@ -2,9 +2,9 @@
 
 void pause_n_clear()
 {
-cout << "Press any key to continue" << endl;
-char ch;
-cin.get.get(ch);
+    cout << "Press any key to continue" << endl;
+    char ch;
+    cin.get(ch);
 #ifdef _WIN32
     system("CLS");
 #elif __unix__
