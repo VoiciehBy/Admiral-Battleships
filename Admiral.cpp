@@ -1,7 +1,6 @@
 #include "Admiral.h"
 
-Admiral::Admiral(int f_s, int is_p) : fleet_size(f_s)
-    is_Player(is_p) {}
+Admiral::Admiral(int f_s, int is_p) : fleet_size(f_s),is_player(is_p) {}
 
 void Admiral::set_battleships(int c,char defend_board[10][10])
 {
