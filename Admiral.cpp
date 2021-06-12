@@ -1,115 +1,122 @@
 #include "Admiral.h"
 
-Admiral::Admiral(int f_s, int is_p) : fleet_size(f_s),is_player(is_p) {}
+Admiral::Admiral(int f_s, int is_p) : fleet_size(f_s),is_player(is_p) {
+    int a = 10;
+    attack_board = new char*[10];
+    defend_board = new char*[10];
+    for(int i = 0; i < a; i++) {
+        attack_board[i] = new char[10];
+        defend_board[i] = new char[10];
+        for(int j = 0; j < a; j++) {
+            attack_board[i][j] = ' ';
+            defend_board[i][j] = ' ';
+        }
+    }
+}
 
-void Admiral::set_battleships(int c,char defend_board[10][10])
-{
+void Admiral::set_battleships(int c) {
     int x = 0,y = 0;
-    for(int i = 0; i < c; i++)
-    {
+    for(int i = 0; i < c; i++) {
         int a = x,b = y;
         srand(time(NULL));
-        if(is_player == 0)
-        {
-            x = rand() % 10;
-            cout << "COM x: " << x << endl;
-            y = rand() % 10;
-            cout << "COM y: " << y << endl;
+        if(is_player == 0) {
+            while( (x == a && y == b)  || x == 0 ||  y == 0 || x>10 || y>10 ) {
+                display_defend_board();
+                x = rand() % 10;
+                y = rand() % 10;
+            }
+            println( "COM x: ",x );
+            println( "COM y: ",y);
         }
 
-        else
-        {
-            cout << "Input coordinates:" << endl;
+        else {
+            println("Input coordinates:");
             cin >> x >> y;
-            while( (x == a && y == b)  || x>10 || y>10 )
-            {
-                cout << "Again,Input coordinates:" << endl;
+            while( (x == a && y == b)  || x>10 || y>10 ) {
+                println("Again,Input coordinates:");
                 cin >> x >> y;
             }
         }
         defend_board[x-1][y-1] = 'U';
+        display_defend_board();
     }
 }
 
-void Admiral::shot_battleships(char attack_board[10][10],char defend_board[10][10])
-{
+void Admiral::shot_battleships(int& enemy_fleet_size,char** enemy_defend_board) {
     int x = 0,y = 0;
-    while(3 != 5)
-    {
+    while(3 != 5) {
         int a = x,b = y;
         srand(time(NULL));
-        if(is_player == 0)
-        {
-            x = rand() % 10;
-            cout << "COM sh x: " << x << endl;
-            y = rand() % 10;
-            cout << "COM sh y: " << y << endl;
+        if(is_player == 0) {
+            while( (x == a && y == b)  || x == 0 ||  y == 0 || x>10 || y>10 ) {
+                x = rand() % 10;
+                y = rand() % 10;
+            }
+            println( "COM sh x: ",x);
+            println( "COM sh y: ",y);
         }
 
-        else
-        {
-            cout << "Input coordinates:" << endl;
+        else {
+            println("Input coordinates:");
             cin >> x >> y;
-            while( (x == a && y == b) || x > 10 || y > 10 || x < 0 || y < 0)
-            {
-                cout << "Again,Input coordinates:" << endl;
+            while( (x == a && y == b) || x > 10 || y > 10 || x <= 0 || y <= 0) {
+                println("Again,Input coordinates:");
                 cin >> x >> y;
             }
         }
-        if(defend_board[x-1][y-1] == 'U')
-        {
-            cout << "Down!" << endl;
+        if(enemy_defend_board[x-1][y-1] == 'U') {
+            println("Down!");
             attack_board[x-1][y-1] = 'x';
-            defend_board[x-1][y-1] = 'x';
+            enemy_defend_board[x-1][y-1] = 'x';
             fleet_size--;
-            if(fleet_size == 0)
-            {
-                cout << "Enemy lost!" << endl;
+            if(fleet_size == 0) {
+                println("Enemy lost!");
                 break;
             }
-        }
-        else
-        {
-            cout << "Missed!" << endl;
+        } else {
+            println("Missed!");
             attack_board[x-1][y-1] = 'O';
-            defend_board[x-1][y-1] = 'O';
+            enemy_defend_board[x-1][y-1] = 'O';
             break;
         }
     }
 }
 
-void Admiral::display_board(char board[10][10])
-{
-    if(is_player == 1)
-    {
+void Admiral::display_attack_board() {
+    if(is_player == 1) {
         int a = 10;
-        for(int i = 0; i < a; i++)
-        {
+        for(int i = 0; i < a; i++) {
             for(int ii = 0; ii < 30; ii++)
                 cout << '=';
             cout << endl
-                 << '|' << board[i][0] << '|';
+                 << '|' << attack_board[i][0] << '|';
             for(int j = 1; j<a; j++)
-                cout << '|' << board[i][j] << '|';
-            cout << endl;
+                cout << '|' << attack_board[i][j] << '|';
+            breakLine();
         }
         for(int ii = 0; ii<30; ii++)
             cout << '=';
-        cout << endl;
-    }
-    else
-        cout << endl;
+        breakLine();
+    } else breakLine();
 }
 
-void Admiral::create_empty_board(char board[10][10])
-{
+void Admiral::display_defend_board() {
     int a = 10;
-    for(int i = 0; i < a; i++)
-    {
-        board[i][0] = ' ';
-        for(int j = 0; j < a; j++)
-            board[i][j] = ' ';
-    }
+    if(is_player == 1) {
+        for(int i = 0; i < a; i++) {
+            for(int ii = 0; ii < 30; ii++)
+                cout << '=';
+            cout << endl
+                 << '|' << defend_board[i][0] << '|';
+            for(int j = 1; j<a; j++)
+                cout << '|' << defend_board[i][j] << '|';
+            breakLine();
+        }
+        for(int ii = 0; ii<30; ii++)
+            cout << '=';
+        breakLine();
+    } else breakLine();
+
 }
 
 Admiral::~Admiral() {}

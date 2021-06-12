@@ -4,65 +4,47 @@
 Admiral player(0,1);
 Admiral player1(0,0);
 
-void start_game()
-{
+void start_game() {
     cout << "BATTLESHIPS" << endl
          << "   ___" << endl
-         << "Enter size of your fleet:" << endl;
+         << "Enter size of your fleet:";
     cin >> player.fleet_size;
     player1.fleet_size = player.fleet_size;
     cout << "Your fleet: " << player.fleet_size
          << " ships ready to fight!!!" << endl;
 }
 
-int main()
-{
+int main() {
     start_game();
-    char board[10][10];
-    char board1[10][10];
-    char board2[10][10];
-    char board3[10][10];
-    player.create_empty_board(board);
-    player.create_empty_board(board1);
-    player1.create_empty_board(board2);
-    player1.create_empty_board(board3);
-    cout << "PS moves ships:" << endl;
-    player.set_battleships(player.fleet_size,board);
-    player.display_board(board);
+    println("PS moves ships:");
+    player.set_battleships(player.fleet_size);
     pause_n_clear();
 
-    cout << "COM moves ships:" << endl;
-    player1.set_battleships(player1.fleet_size,board2);
-    player1.display_board(board2);
-
+    println("COM moves ships:");
+    player1.set_battleships(player1.fleet_size);
     pause_n_clear();
 
-    while(player.fleet_size != 0 && player1.fleet_size != 0)
-    {
-        cout << "PS:" << endl;
-        player.display_board(board);
-        player.display_board(board1);
+    while(player.fleet_size != 0 && player1.fleet_size != 0) {
+        println("PS:");
+        player.display_defend_board();
 
-        cout << "PS TURN:" << endl;
-        player.shot_battleships(board1,board2);
-        player.display_board(board1);
-        if(player.fleet_size == 0)
-        {
-            cout << "COM lost!" << endl;
+        println("PS TURN:");
+        player.display_attack_board();
+        player.shot_battleships(player1.fleet_size,player1.defend_board);
+        if(player.fleet_size == 0) {
+            println("COM lost!");
             return 0;
         }
 
         pause_n_clear();
 
-        cout << "COM:" << endl;
-        player.display_board(board2);
-        player1.display_board(board3);
-        cout << "COM TURN:" << endl;
-        player1.shot_battleships(board3,board);
-        player1.display_board(board3);
-        if(player.fleet_size == 0)
-        {
-            cout << "PS lost!" << endl;
+        println("COM:");
+        player1.display_defend_board();
+        println("COM TURN:");
+        player1.display_attack_board();
+        player1.shot_battleships(player.fleet_size,player.defend_board);
+        if(player.fleet_size == 0) {
+            println("PS lost!");
             return 0;
         }
     }
