@@ -1,13 +1,12 @@
 #include "Admiral.h"
 
 Admiral::Admiral(int f_s, int is_p) : fleet_size(f_s),is_player(is_p) {
-    int a = 10;
-    attack_board = new char*[10];
-    defend_board = new char*[10];
-    for(int i = 0; i < a; i++) {
-        attack_board[i] = new char[10];
-        defend_board[i] = new char[10];
-        for(int j = 0; j < a; j++) {
+    attack_board = new char*[boardX];
+    defend_board = new char*[boardX];
+    for(int i = 0; i < boardX; i++) {
+        attack_board[i] = new char[boardY];
+        defend_board[i] = new char[boardY];
+        for(int j = 0; j < boardY; j++) {
             attack_board[i][j] = ' ';
             defend_board[i][j] = ' ';
         }
@@ -119,4 +118,13 @@ void Admiral::display_defend_board() {
 
 }
 
-Admiral::~Admiral() {}
+Admiral::~Admiral() {
+    for(int i = 0; i < boardX; i++) {
+        for(int j = 0; j < boardY; j++) {
+            attack_board[i][j] = ' ';
+            defend_board[i][j] = ' ';
+        }
+    }
+    delete attack_board;
+    delete defend_board;
+}
